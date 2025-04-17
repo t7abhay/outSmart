@@ -1,0 +1,17 @@
+{
+  "name": "OutSmart",
+  "description": "Helps to find jobs on linkedin by filtering out  date/time posted",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "./hatake_kakashi.png",
+    "permissions": ["tabs", "scripting"],
+    "background": {
+      "service_worker": "main.js"
+    },
+    "action": {
+      "default_title": "Modify URL"
+    }
+  }
+}
