@@ -1,5 +1,12 @@
-document.getElementById("button").addEventListener("click", () => {
+document.getElementById("form_1").addEventListener("submit", (e) => {
+  e.preventDefault(); // Prevent popup refresh
+
   const userInput = document.getElementById("input_hours").value;
+
+  if (!userInput || isNaN(userInput) || userInput <= 0) {
+    alert("Please enter a valid number of hours");
+    return;
+  }
 
   chrome.tabs.query(
     {
@@ -10,6 +17,7 @@ document.getElementById("button").addEventListener("click", () => {
       const tab = tabs[0];
 
       if (!tab || !tab.url) {
+        console.error("Could not get the current tab or URL.");
         return;
       }
 
@@ -22,10 +30,13 @@ document.getElementById("button").addEventListener("click", () => {
 });
 
 function modifyUrl(originalUrl, value) {
-  const modUrl = originalUrl.replace(/(f_TPR=r)\d+/, `$1${value}`);
-  return modUrl;
+  if (!originalUrl.includes("f_TPR=r")) {
+    console.warn("No matching 'f_TPR=r' param found in URL.");
+    return originalUrl;
+  }
+  return originalUrl.replace(/f_TPR=r\d+/, `f_TPR=r${value}`);
 }
 
 function hoursToSeconds(hours) {
-  return hours * 3600;
+  return parseFloat(hours) * 3600;
 }
